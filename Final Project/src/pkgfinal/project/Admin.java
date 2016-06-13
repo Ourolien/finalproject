@@ -8,9 +8,14 @@ package pkgfinal.project;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import static pkgfinal.project.Signup.DB_URL;
+import static pkgfinal.project.Signup.JDBC_DRIVER;
+import static pkgfinal.project.Signup.PASS;
+import static pkgfinal.project.Signup.USER;
 
 /**
  *
@@ -37,8 +42,9 @@ public class Admin extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         product = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        addbutton = new javax.swing.JButton();
+        delbutton = new javax.swing.JButton();
+        Exitbutton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,17 +63,24 @@ public class Admin extends javax.swing.JFrame {
 
         jLabel1.setText("Admin Store Configuration");
 
-        jButton1.setText("Add");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addbutton.setText("Add");
+        addbutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addbuttonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Delete");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        delbutton.setText("Delete");
+        delbutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                delbuttonActionPerformed(evt);
+            }
+        });
+
+        Exitbutton.setText("Exit");
+        Exitbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExitbuttonActionPerformed(evt);
             }
         });
 
@@ -80,9 +93,11 @@ public class Admin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(Exitbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(delbutton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(11, 11, 11))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -99,21 +114,41 @@ public class Admin extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
+                    .addComponent(delbutton)
+                    .addComponent(addbutton)
+                    .addComponent(Exitbutton))
                 .addGap(16, 16, 16))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void delbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delbuttonActionPerformed
+            try {
+            Connection conn = null;
+            Statement stmt = null;
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DB_URL, USER,PASS);
+            stmt = conn.createStatement();
+            String sql="delete from product limit 1";
+            System.out.println(sql);
+            stmt.executeUpdate(sql);
+            this.dispose();
+            new Admin().setVisible(true);
+                    } catch (ClassNotFoundException | SQLException ex) {
+            System.err.println(ex);
+               }      
+    }//GEN-LAST:event_delbuttonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void addbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addbuttonActionPerformed
+        this.dispose();
+        new Add().setVisible(true);
+    }//GEN-LAST:event_addbuttonActionPerformed
+
+    private void ExitbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitbuttonActionPerformed
+        this.dispose();
+        new Login().setVisible(true);
+    }//GEN-LAST:event_ExitbuttonActionPerformed
     
         private static void product() {
         Connection login=null;
@@ -192,8 +227,9 @@ public class Admin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton Exitbutton;
+    private javax.swing.JButton addbutton;
+    private javax.swing.JButton delbutton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable product;

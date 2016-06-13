@@ -128,7 +128,7 @@ public class Login extends javax.swing.JFrame {
                     this.dispose();
                     break;
                 }
-                else if (userinput.equals(usertemp)||passinput.equals(passtemp)){
+                else if (userinput.equalsIgnoreCase(usertemp)||passinput.equalsIgnoreCase(passtemp)){
                     JOptionPane.showMessageDialog(null, "hello "+ userinput);
                     correct = 1;
                     new Store().setVisible(true);
