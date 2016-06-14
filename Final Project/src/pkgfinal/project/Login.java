@@ -34,9 +34,9 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         userbox = new javax.swing.JTextField();
-        passbox = new javax.swing.JTextField();
         signup = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        passbox = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,12 +50,6 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setText("Username");
 
         jLabel2.setText("Password");
-
-        passbox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passboxActionPerformed(evt);
-            }
-        });
 
         signup.setText("Sign Up");
         signup.addActionListener(new java.awt.event.ActionListener() {
@@ -85,9 +79,9 @@ public class Login extends javax.swing.JFrame {
                         .addGap(18, 18, 18)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(loginbutton, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-                    .addComponent(passbox)
-                    .addComponent(userbox))
-                .addContainerGap(41, Short.MAX_VALUE))
+                    .addComponent(userbox)
+                    .addComponent(passbox))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,13 +93,14 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(userbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(passbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(loginbutton)
-                    .addComponent(signup))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(loginbutton)
+                            .addComponent(signup)))
+                    .addComponent(passbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(24, 24, 24))
         );
 
@@ -149,10 +144,6 @@ public class Login extends javax.swing.JFrame {
         catch(Exception ex){
         }
     }//GEN-LAST:event_loginbuttonActionPerformed
-
-    private void passboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passboxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passboxActionPerformed
 
     private void signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupActionPerformed
         this.dispose();
@@ -199,7 +190,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton loginbutton;
-    private javax.swing.JTextField passbox;
+    private javax.swing.JPasswordField passbox;
     private javax.swing.JButton signup;
     private javax.swing.JTextField userbox;
     // End of variables declaration//GEN-END:variables

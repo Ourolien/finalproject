@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -18,8 +19,14 @@ import javax.swing.table.DefaultTableModel;
  * @author lucif
  */
 public class Store extends javax.swing.JFrame {
-    public static ArrayList myList = new ArrayList<Product>();
+    public static ArrayList<Product> myList;
     public static DefaultTableModel productmodel;
+
+    /**
+     *
+     */
+    public static ArrayList<Product> cart = new ArrayList<>();
+    public static DefaultTableModel cartmodel;
     public final static String DB_URL="jdbc:mysql://localhost:3306/OnlineShop";
     public final static String USER="root";
     public final static String PASS="";
@@ -27,22 +34,22 @@ public class Store extends javax.swing.JFrame {
     
     public Store() {
         initComponents();
+        myList = new ArrayList<>();
         productmodel = (DefaultTableModel) product.getModel();
         product();
-                
-                productmodel.setRowCount(0);
-                for (int x = 0;x<myList.size();x++){
-                    Product tempproduct = (Product) myList.get(x);
-                    productmodel.insertRow(productmodel.getRowCount(), new Object[]{
+        productmodel.setRowCount(0);
+        for (int x = 0;x<myList.size();x++){
+            Product tempproduct = (Product) myList.get(x);
+            productmodel.insertRow(productmodel.getRowCount(), new Object[]{
 
-                        tempproduct.getProductID(),
-                        tempproduct.getManufacturer(),
-                        tempproduct.getPrice(),
-                        tempproduct.getStock(),
-                        tempproduct.getProductname()
+                tempproduct.getProductID(),
+                tempproduct.getManufacturer(),
+                tempproduct.getPrice(),
+                tempproduct.getStock(),
+                tempproduct.getProductname()
 
-                    });
-                }
+            });
+        }
     }
     
     
@@ -81,7 +88,7 @@ public class Store extends javax.swing.JFrame {
 
         jLabel1.setText("Store");
 
-        outbutton.setText("Checkout");
+        outbutton.setText("View Cart");
         outbutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 outbuttonActionPerformed(evt);
@@ -102,7 +109,7 @@ public class Store extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(exitbutton)
@@ -133,7 +140,27 @@ public class Store extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cartbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartbuttonActionPerformed
-        myList.add(product.getSelectedRow());
+        boolean isExist = false;
+        int tmp = 0;
+        Product temp2 = (Product) myList.get(product.getSelectedRow());
+        for (int x =0; x<cart.size();x++){
+            if (cart.get(x) == temp2){
+                tmp = x;
+                isExist=true;
+            }
+            if(isExist) {
+                break;
+            }
+        }
+        if(isExist) {
+            cart.get(tmp).setStock(cart.get(tmp).getStock()+1);
+        }
+        else {
+            temp2.setStock(1);
+            cart.add(temp2);
+        }
+        JOptionPane.showMessageDialog(null,"A product has been added to cart!");
+        
     }//GEN-LAST:event_cartbuttonActionPerformed
 
     private void exitbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitbuttonActionPerformed
@@ -192,4 +219,8 @@ public class Store extends javax.swing.JFrame {
     private javax.swing.JButton outbutton;
     private javax.swing.JTable product;
     // End of variables declaration//GEN-END:variables
+
+    private Product myList(int x) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
