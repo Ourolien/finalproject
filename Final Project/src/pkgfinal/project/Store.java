@@ -27,7 +27,22 @@ public class Store extends javax.swing.JFrame {
     
     public Store() {
         initComponents();
-        productmodel = (DefaultTableModel) product.getModel();  
+        productmodel = (DefaultTableModel) product.getModel();
+        product();
+                
+                productmodel.setRowCount(0);
+                for (int x = 0;x<myList.size();x++){
+                    Product tempproduct = (Product) myList.get(x);
+                    productmodel.insertRow(productmodel.getRowCount(), new Object[]{
+
+                        tempproduct.getProductID(),
+                        tempproduct.getManufacturer(),
+                        tempproduct.getPrice(),
+                        tempproduct.getStock(),
+                        tempproduct.getProductname()
+
+                    });
+                }
     }
     
     
@@ -40,6 +55,7 @@ public class Store extends javax.swing.JFrame {
         product = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         outbutton = new javax.swing.JButton();
+        exitbutton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,6 +82,18 @@ public class Store extends javax.swing.JFrame {
         jLabel1.setText("Store");
 
         outbutton.setText("Checkout");
+        outbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                outbuttonActionPerformed(evt);
+            }
+        });
+
+        exitbutton.setText("Log Out");
+        exitbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitbuttonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,6 +105,8 @@ public class Store extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(exitbutton)
+                        .addGap(18, 18, 18)
                         .addComponent(outbutton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cartbutton))
@@ -94,7 +124,8 @@ public class Store extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cartbutton)
-                    .addComponent(outbutton))
+                    .addComponent(outbutton)
+                    .addComponent(exitbutton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -102,8 +133,18 @@ public class Store extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cartbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartbuttonActionPerformed
-        // TODO add your handling code here:
+        myList.add(product.getSelectedRow());
     }//GEN-LAST:event_cartbuttonActionPerformed
+
+    private void exitbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitbuttonActionPerformed
+        this.dispose();
+        new Login().setVisible(true);
+    }//GEN-LAST:event_exitbuttonActionPerformed
+
+    private void outbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outbuttonActionPerformed
+        this.dispose();
+        new Checkout().setVisible(true);
+    }//GEN-LAST:event_outbuttonActionPerformed
     
     private static void product() {
         Connection login=null;
@@ -138,27 +179,14 @@ public class Store extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Store().setVisible(true);
-                product();
-                productmodel.setRowCount(0);
-                for (int x = 0;x<myList.size();x++){
-                    Product tempproduct = (Product) myList.get(x);
-                    productmodel.insertRow(productmodel.getRowCount(), new Object[]{
-
-                        tempproduct.getProductID(),
-                        tempproduct.getManufacturer(),
-                        tempproduct.getPrice(),
-                        tempproduct.getStock(),
-                        tempproduct.getProductname()
-
-                    });
-                }
+                
             } 
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cartbutton;
+    private javax.swing.JButton exitbutton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton outbutton;

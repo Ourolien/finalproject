@@ -23,7 +23,7 @@ import static pkgfinal.project.Signup.USER;
  */
 public class Admin extends javax.swing.JFrame {
     
-    public static ArrayList myList = new ArrayList<Product>();
+    public static ArrayList<Product> myList;
     public static DefaultTableModel productmodel;
     public final static String DB_URL="jdbc:mysql://localhost:3306/OnlineShop";
     public final static String USER="root";
@@ -32,7 +32,22 @@ public class Admin extends javax.swing.JFrame {
     
     public Admin() {
         initComponents();
+        myList = new ArrayList<>();
         productmodel = (DefaultTableModel) product.getModel();
+        product();
+                productmodel.setRowCount(0);
+                for (int x = 0;x<myList.size();x++){
+                    Product tempproduct = (Product) myList.get(x);
+                    productmodel.insertRow(productmodel.getRowCount(), new Object[]{
+
+                        tempproduct.getProductID(),
+                        tempproduct.getManufacturer(),
+                        tempproduct.getPrice(),
+                        tempproduct.getStock(),
+                        tempproduct.getProductname()
+                        
+                    });
+                }
     }
 
     @SuppressWarnings("unchecked")
@@ -77,7 +92,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
-        Exitbutton.setText("Exit");
+        Exitbutton.setText("Log Out");
         Exitbutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ExitbuttonActionPerformed(evt);
@@ -93,7 +108,7 @@ public class Admin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(Exitbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Exitbutton)
                         .addGap(18, 18, 18)
                         .addComponent(delbutton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -113,10 +128,11 @@ public class Admin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(delbutton)
-                    .addComponent(addbutton)
-                    .addComponent(Exitbutton))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(addbutton)
+                        .addComponent(Exitbutton)))
                 .addGap(16, 16, 16))
         );
 
@@ -124,6 +140,16 @@ public class Admin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void delbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delbuttonActionPerformed
+        Connection login=null;
+        Statement loginsave=null;
+        try {
+        Class.forName(JDBC_DRIVER);
+        login = DriverManager.getConnection(DB_URL, USER, PASS);
+        loginsave = login.createStatement();}
+        catch(Exception ex){
+        System.err.println(ex);
+        }
+        int correct =0;
             try {
             Connection conn = null;
             Statement stmt = null;
@@ -137,7 +163,21 @@ public class Admin extends javax.swing.JFrame {
             new Admin().setVisible(true);
                     } catch (ClassNotFoundException | SQLException ex) {
             System.err.println(ex);
-               }      
+               }
+            try (ResultSet db = loginsave.executeQuery("select*from product")) {
+            while (db.next()){
+                Product temp = new Product();
+                temp.setProductID(null);
+                temp.setManufacturer(null);
+                temp.setPrice(null);
+                temp.setStock(0);
+                temp.setProductname(null);
+                myList.add(temp);
+                
+            }
+    }      catch(Exception ex){
+           System.err.println(ex);    
+        }
     }//GEN-LAST:event_delbuttonActionPerformed
 
     private void addbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addbuttonActionPerformed
@@ -171,6 +211,7 @@ public class Admin extends javax.swing.JFrame {
                 temp.setStock(db.getInt("stock"));
                 temp.setProductname(db.getString("productname"));
                 myList.add(temp);
+                
             }
     }
         catch(Exception ex){
@@ -208,20 +249,6 @@ public class Admin extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Admin().setVisible(true);
-                product();
-                productmodel.setRowCount(0);
-                for (int x = 0;x<myList.size();x++){
-                    Product tempproduct = (Product) myList.get(x);
-                    productmodel.insertRow(productmodel.getRowCount(), new Object[]{
-
-                        tempproduct.getProductID(),
-                        tempproduct.getManufacturer(),
-                        tempproduct.getPrice(),
-                        tempproduct.getStock(),
-                        tempproduct.getProductname()
-
-                    });
-                }
             } 
         });
     }
